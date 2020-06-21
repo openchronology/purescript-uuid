@@ -4,7 +4,7 @@ import Prelude
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..), fromJust)
 import Data.String (length)
-import Data.UUID (genUUID, genv3UUID, genv5UUID, parseUUID, toString)
+import Data.UUID (genUUID, genv3UUID, genv5UUID, parseUUID, toString, toBytes, parseBytesUUID)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
@@ -60,3 +60,7 @@ main =
           let
             uuid = unsafePerformEffect genUUID
           runExcept ((encode >>> decode) uuid) `shouldEqual` Right uuid
+        it "`toBytes >>> parseBytesUUID` returns the uuid unchanged" do
+          let
+            uuid = unsafePerformEffect genUUID
+          (toBytes >>> parseBytesUUID) uuid `shouldEqual` Just uuid
