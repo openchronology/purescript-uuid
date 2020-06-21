@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "uuid": "^3.4.0",
+    "uuid": "^8.1.0",
     "uuid-validate": "0.0.3"
   },
   "devDependencies": {
