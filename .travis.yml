@@ -7,5 +7,4 @@ install:
   - npm ci
 
 script:
-  - npx bower install
   - npm -s test
