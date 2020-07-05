@@ -8,6 +8,7 @@ module Data.UUID
   , toString
   , toBytes
   , parseBytesUUID
+  , showBytes
   ) where
 
 import Prelude
