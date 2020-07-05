@@ -141,7 +141,10 @@ toBytes uuid = unsafePartial $ case match uuidRegex (toString uuid) of
       Right r -> r
 
 parseBytesUUID :: Vec D16 Int -> Maybe UUID
-parseBytesUUID bytes = parseUUID shownBytes
+parseBytesUUID = parseUUID <<< showBytes
+
+showBytes :: Vec D16 Int -> String
+showBytes bytes = shownBytes
   where
     shownBytes =
       let toHexString x =
