@@ -23,9 +23,3 @@ exports.getUUID5Impl = function (str) {
     return mkV5UUID(str, namespace);
   };
 };
-
-var validateV4UUID = null;
-exports.validateV4UUID = function (str) {
-  if (validateV4UUID === null) validateV4UUID = require('uuid-validate');
-  return validateV4UUID(str, 4);
-};

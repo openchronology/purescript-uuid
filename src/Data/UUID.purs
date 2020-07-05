@@ -17,7 +17,7 @@ import Data.Either (note, Either(Right))
 import Data.Generic.Rep (class Generic)
 import Data.Int (hexadecimal, fromStringAs, toStringAs)
 import Data.String (splitAt, length)
-import Data.String.Regex (Regex, regex, match)
+import Data.String.Regex (Regex, regex, match, test)
 import Data.String.Regex.Flags (noFlags)
 import Data.List.NonEmpty (singleton)
 import Data.Vec (Vec, fill, index)
@@ -44,13 +44,26 @@ foreign import getUUIDImpl :: Effect String
 genUUID :: Effect UUID
 genUUID = getUUIDImpl >>= pure <<< UUID
 
-foreign import validateV4UUID :: String -> Boolean
-
 -- | Validates a String as a v4 UUID
 parseUUID :: String -> Maybe UUID
-parseUUID str = case validateV4UUID str of
-  true -> Just $ UUID str
-  _ -> Nothing
+parseUUID str =
+  if test uuidRegex str
+    then Just (UUID str)
+    else Nothing
+  where
+    hexRegex :: String
+    hexRegex = "[0-9a-fA-F]"
+    uuidRegexString :: String
+    uuidRegexString =
+      "^(" <> hexRegex
+        <> "{8})-(" <> hexRegex
+        <> "{4})-(" <> hexRegex
+        <> "{4})-(" <> hexRegex
+        <> "{4})-(" <> hexRegex
+        <> "{12})$"
+    uuidRegex :: Regex
+    uuidRegex = unsafePartial $ case regex uuidRegexString noFlags of
+      Right r -> r
 
 foreign import getUUID3Impl :: String -> String -> String
 
